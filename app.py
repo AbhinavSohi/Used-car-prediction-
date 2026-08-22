@@ -1,5 +1,5 @@
 """
-VaahanValue — AI-Powered Used Car Valuation
+AutoValuate — AI-Powered Used Car Valuation
 =============================================
 A Streamlit UI for an existing, already-trained used-car price model.
 
@@ -62,7 +62,7 @@ FALLBACK_FEATURE_ORDER = [
 ]
 
 st.set_page_config(
-    page_title="VaahanValue | AI Used Car Valuation",
+    page_title="AutoValuate | AI Used Car Valuation",
     page_icon="🚗",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -191,15 +191,26 @@ hr.road {
 }
 
 /* ---- inputs ---- */
-div[data-baseweb="select"] > div, .stSlider {
-    background-color: rgba(255,255,255,0.05) !important;
+/* Solid (non-translucent) colors on purpose: a translucent background
+   stacked on top of Streamlit's own light/dark base theme can end up
+   white-on-white in some environments, making typed values invisible. */
+div[data-baseweb="select"] > div {
+    background-color: #171C24 !important;
     border-radius: 10px !important;
-    color: #EDEFF2 !important;
+    color: #F5F7FA !important;
+}
+div[data-baseweb="select"] * {
+    color: #F5F7FA !important;
+}
+.stSlider {
+    background-color: transparent !important;
 }
 .stNumberInput input {
-    background-color: rgba(255,255,255,0.05) !important;
+    background-color: #171C24 !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
     border-radius: 10px !important;
-    color: #EDEFF2 !important;
+    color: #F5F7FA !important;
+    -webkit-text-fill-color: #F5F7FA !important;
     caret-color: #F2A93B !important;
     cursor: text !important;
     pointer-events: auto !important;
@@ -282,8 +293,8 @@ div[data-testid="stFormSubmitButton"]:nth-of-type(1) button,
 # ============================================================
 # 4. HEADER
 # ============================================================
-st.markdown('<span class="plate-badge">IND · AI-VALUATION</span>', unsafe_allow_html=True)
-st.markdown('<div class="hero-title">🚗 VaahanValue</div>', unsafe_allow_html=True)
+st.markdown('<span class="plate-badge">AI · AUTO VALUATION</span>', unsafe_allow_html=True)
+st.markdown('<div class="hero-title">🚗 AutoValuate</div>', unsafe_allow_html=True)
 st.markdown('<div class="hero-sub">AI-powered used car price estimator — trained on real Indian resale listings.</div>', unsafe_allow_html=True)
 st.markdown('<hr class="road">', unsafe_allow_html=True)
 
