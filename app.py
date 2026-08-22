@@ -191,10 +191,29 @@ hr.road {
 }
 
 /* ---- inputs ---- */
-div[data-baseweb="select"] > div, .stNumberInput input, .stSlider {
+div[data-baseweb="select"] > div, .stSlider {
     background-color: rgba(255,255,255,0.05) !important;
     border-radius: 10px !important;
     color: #EDEFF2 !important;
+}
+.stNumberInput input {
+    background-color: rgba(255,255,255,0.05) !important;
+    border-radius: 10px !important;
+    color: #EDEFF2 !important;
+    caret-color: #F2A93B !important;
+    cursor: text !important;
+    pointer-events: auto !important;
+}
+/* Hide the native browser number spinner — Streamlit already renders its
+   own +/- step buttons, so the native one only overlaps and blocks clicks
+   into the text area. */
+.stNumberInput input::-webkit-outer-spin-button,
+.stNumberInput input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+.stNumberInput input[type=number] {
+    -moz-appearance: textfield !important;
 }
 label, .stSlider label, .stSelectbox label, .stNumberInput label {
     color: #C6CDD6 !important;
@@ -320,10 +339,15 @@ with st.form("car_form"):
         km_driven = st.number_input("Kilometers Driven", min_value=0, max_value=1_000_000,
                                      value=40000, step=1000, key="km_driven")
     with u2:
+        st.write("")  # small vertical alignment nudge to match the slider's height
+    p1, p2, p3 = st.columns(3)
+    with p1:
         mileage = st.number_input("Mileage (kmpl / km per kg)", min_value=0.0, max_value=40.0,
                                    value=18.0, step=0.1, key="mileage")
+    with p2:
         engine = st.number_input("Engine (CC)", min_value=50, max_value=6000,
                                   value=1200, step=10, key="engine")
+    with p3:
         power = st.number_input("Power (bhp)", min_value=20.0, max_value=800.0,
                                  value=85.0, step=1.0, key="power")
     st.markdown('</div>', unsafe_allow_html=True)
