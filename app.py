@@ -75,7 +75,23 @@ st.set_page_config(
 def load_model():
     if not MODEL_PATH.exists():
         return None
-    return joblib.load(MODEL_PATH)
+    # A 0-byte or suspiciously tiny file usually means the .pkl is actually
+    # a Git LFS pointer (common on Streamlit Cloud) rather than the real
+    # model binary — catch that early with a clear message instead of a
+    # raw EOFError.
+    if MODEL_PATH.stat().st_size < 1024:
+        st.error(
+            f"⚠️ **{MODEL_PATH}** is only {MODEL_PATH.stat().st_size} bytes — "
+            "that's too small to be a real model file. This usually means it's "
+            "a Git LFS pointer file rather than the actual binary. Check "
+            "`git lfs ls-files` in your repo, or re-upload the model without LFS."
+        )
+        return None
+    try:
+        return joblib.load(MODEL_PATH)
+    except Exception as e:
+        st.error(f"⚠️ Failed to load **{MODEL_PATH}**: {e}")
+        return None
 
 
 @st.cache_data
